@@ -1,0 +1,170 @@
+<!DOCTYPE HTML>
+<!--
+	Phantom by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Research</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
+		<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
+	</head>
+	<body>
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<div class="inner">
+
+							<!-- Logo -->
+								<a href="index.html" class="logo">
+									<span class="symbol"><img src="images/sitelogo.png" alt="" /></span><span class="title">Home</span>
+								</a>
+
+							<!-- Nav -->
+							
+								<nav>
+									<ul>
+										<li><a href="#menu">Menu</a></li>
+									</ul>
+								</nav>
+							
+						</div>
+					</header>
+
+				<!-- Menu -->
+				<nav id="menu">
+						<h2>Menu</h2>
+						<ul>
+							<li><a href="https://jingtiangao.github.io/">Home</a></li>
+							<li><a href="https://jingtiangao.github.io/">Bio</a></li>
+							<li><a href="https://jingtiangao.github.io/">Publications</a></li>
+							<!-- <li><a href="elements.html">Elements</a></li> -->
+						</ul>
+					</nav>
+				<!-- Main -->
+					<div id="main">
+						<div class="inner">
+							<h1>Research on Continual Learning to avoid catastrophic forgetting</h1>
+							
+							<p>Data set: CIFAR-100, 100 categories are equally divided into 5 tasks, of which</p> 
+							<p>Base Task: class 0 ~ class 19,
+Task 1: class 20 ~ class 39,
+Task 2: class 40 ~ class 59,
+Task 3: class 60 ~ class 79,
+Task 4: class 80 ~ class 99</p>
+							
+							<p>Assume that represents the data of the old task, represents the number of categories of the old task; represents the data of the new task, represents
+The number of categories of the new task; when the model is trained based on the training data of the new task, the number of output nodes of the model is, the loss function
+The calculation method of CrossEntropy has the following two forms</p>
+							
+							<img src="images/1.png">
+
+							<p>Among them, represents the total number of samples in the current training set, represents the output of the model,
+If formula  is used to calculate,<img src="images/2.png">, for a single sample, without loss of generality, assume that the sample belongs to the category
+, Then loss is:</p>
+							<img src="images/3.png"> 
+							
+							<img src="images/4.png">
+
+							
+							<img src="images/5.png">
+							<img src="images/6.png">
+
+							<img src="images/7.png">
+							<img src="images/8.png">
+							
+<p>Let be the feature extracted by the network, that is, the input of the classifier, then. So in summary, when training the current task,
+The weight corresponding to the old task in the classifier
+Will tend to be consistent, namely:</p>
+							<img src="images/9.png">
+							<p>Based on this result, when the old data is used to adjust the model with knowledge distillation, it may produce:</p>
+							<img src="images/10.png">
+							<p> As a result, konwledge distillation will not work. (By re-randomizing the corresponding weights in the classifier Whether the machine initialization can make the knowledge distillation work is yet to be verified by experiments) </p>
+
+							<p>In the experiment, formula (2) is used to calculate the classification loss in the process of training the new task, and the output of the old task is correspondingly
+The knowledge distillation constraint, that is, the LwF method, uses T-SNE to visualize how the model is
+The features (512 dimensions) extracted from the training set data of Base Task, the results are as follows:</p>
+							<img src="images/11.png">
+							<br/>
+							<p>It can be found that although the LwF method reduces the model’s forgetting of previous tasks to a certain extent, as the number of tasks increases, the model’s forgetting
+Forgetting also intensified further. (The characteristics of the training data of Base Task gradually become disordered with the increase of tasks) When training using the LwF method, formula (2) is used to calculate CrossEntropy and knowledge distillation is used. 
+Row constraints, the model is in the test set (the test set of each task will include the test data of all tasks before its own test data) and
+The accuracy on the test set of Base Task is:</p>
+							<img src="images/12.png">
+							<p>If the constraints of knowledge distillation are discarded and only CrossEntropy (formula 2) is used, the model is testing
+Set (the test set of each task will include the test data of all tasks before its own test data) and the test set of Base Task
+The accuracy of the above is:</p>
+							<img src="images/13.png">
+							<p>Among them, the training epoch is 250; the initial learning rate (lr) is 0.1; when the epoch is 100, 150, 200, lr
+It becomes one tenth of the previous value; the temperature of knowledge distillation is 2; the Batch Size is 256.</p>
+						</div>
+
+					</div>
+
+				<!-- Footer -->
+				<!--
+					<footer id="footer">
+						<div class="inner">
+							<section>
+								<h2>Get in touch</h2>
+								<form method="post" action="#">
+									<div class="field half first">
+										<input type="text" name="name" id="name" placeholder="Name" />
+									</div>
+									<div class="field half">
+										<input type="email" name="email" id="email" placeholder="Email" />
+									</div>
+									<div class="field">
+										<textarea name="message" id="message" placeholder="Message"></textarea>
+									</div>
+									<ul class="actions">
+										<li><input type="submit" value="Send" class="special" /></li>
+									</ul>
+								</form>
+							</section>
+							<section>
+								<h2>Follow</h2>
+								<ul class="icons">
+									<li><a href="#" class="icon style2 fa-twitter"><span class="label">Twitter</span></a></li>
+									<li><a href="#" class="icon style2 fa-facebook"><span class="label">Facebook</span></a></li>
+									<li><a href="#" class="icon style2 fa-instagram"><span class="label">Instagram</span></a></li>
+									<li><a href="#" class="icon style2 fa-dribbble"><span class="label">Dribbble</span></a></li>
+									<li><a href="#" class="icon style2 fa-github"><span class="label">GitHub</span></a></li>
+									<li><a href="#" class="icon style2 fa-500px"><span class="label">500px</span></a></li>
+									<li><a href="#" class="icon style2 fa-phone"><span class="label">Phone</span></a></li>
+									<li><a href="#" class="icon style2 fa-envelope-o"><span class="label">Email</span></a></li>
+								</ul>
+							</section>
+							<ul class="copyright">
+								<li>&copy; Untitled. All rights reserved</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+							</ul>
+						</div>
+					</footer>
+				-->
+					<footer>
+						<div class="inner">
+							
+							<ul class="copyright">
+								<li>&copy; chuyang gao. All rights reserved</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+							</ul>
+						</div>
+
+					</footer
+			</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/skel.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>
